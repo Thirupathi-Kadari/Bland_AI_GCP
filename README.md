@@ -1,116 +1,104 @@
 # Bland_AI
-## AI_Health_Monitoring Calls Project
+## GCP Deployment Project
 
-This project uses the Bland API to make reminder calls and sets up a Flask server to handle webhooks and store conversations.
+This project involves deploying a Flask application on Google Cloud Platform (GCP) that interacts with the Bland AI API. It includes a webhook endpoint for receiving data from Bland AI, a method to manually trigger calls, and instructions for deploying the application to GCP.
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Deployment](#deployment)
+- [Configuration](#configuration)
 - [API Documentation](#api-documentation)
-- [Webhooks](#webhooks)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
 
 ### Prerequisites
 
-- Python 3.6+
+- Python 3.9+
 - `requests` library
 - `flask` library
-- `ngrok` (for HTTPS tunneling)
+- `gunicorn` for serving the Flask app
 
 ### Setup
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/Thirupathi-Kadari/Bland_AI.git
-    cd Bland_AI
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
     ```
 
-2. Install the dependencies:
+2. Create and activate a virtual environment:
     ```sh
-    pip install requests
-    pip install flask
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. Install the dependencies:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+4. Set up environment variables:
+    Create a `.env` file in the root directory and add your API key:
+    ```ini
+    API_KEY=your_bland_ai_api_key
     ```
 
 ## Usage
 
+### Running the Flask Application Locally
+
+To run the Flask application locally:
+1. Start the Flask server:
+    ```sh
+    python app.py
+    ```
+
+2. Access the application at `http://localhost:5000`.
+
 ### Making a Reminder Call
 
-To make a reminder call using the Bland API, refer to the [Bland_Ai_Integ.py](https://github.com/Thirupathi-Kadari/Bland_AI/blob/main/Bland_Ai_Integ.py) file in the repository.
+To trigger a reminder call using the Bland AI API, navigate to the following endpoint:
+- **GET /trigger_call**: Manually triggers a call using the Bland AI API.
 
-### Setting Up the Flask Server
+### Retrieving Conversations
 
-To set up the Flask server to handle webhooks and store conversations, refer to the [Flask.py](https://github.com/Thirupathi-Kadari/Bland_AI/blob/main/Flask.py) file in the repository.
+To view stored conversations:
+- **GET /conversations**: Retrieves all stored conversations from `conversations.json`.
 
-### Using ngrok for HTTPS
+## Deployment
 
-Since the `Bland_Ai_Integ.py` file requires an HTTPS URL but the Flask server provides only HTTP, you can use ngrok to create an HTTPS tunnel. Follow these steps:
+### Deploying to Google Cloud Platform (GCP)
 
-1. Install ngrok:
+1. **Install the Google Cloud SDK** if you haven't already: [Google Cloud SDK Installation](https://cloud.google.com/sdk/docs/install)
+
+2. **Authenticate with Google Cloud:**
     ```sh
-    # On macOS
-    brew install ngrok/ngrok/ngrok
-
-    # On Windows
-    choco install ngrok
-
-    # On Linux
-    snap install ngrok
+    gcloud auth login
     ```
 
-2. Start the Flask server:
+3. **Set your project:**
     ```sh
-    python flask_server.py
+    gcloud config set project your-project-id
     ```
 
-3. In a new terminal, start ngrok to tunnel your Flask server:
+4. **Deploy the application:**
     ```sh
-    ngrok http 5000
+    gcloud app deploy
     ```
 
-4. Copy the HTTPS URL provided by ngrok (e.g., `https://<your-subdomain>.ngrok.io`) and use it as the webhook URL in your `Bland_Ai_Integ.py` file.
+   The application will be deployed and accessible at a URL provided by GCP.
 
-## Webhooks
+## Configuration
 
-### Setting Up the Webhook
+### `app.yaml`
 
-To handle incoming webhook data from the Bland API, you'll need to set up a webhook URL in your application. This URL should be publicly accessible over HTTPS. Here’s how to obtain and use the webhook URL:
+The `app.yaml` file configures the runtime and entrypoint for your Flask application. Update the `API_KEY` environment variable with your actual API key:
+```yaml
+runtime: python39
+entrypoint: gunicorn -b :$PORT app:app
 
-1. **Create a Webhook URL:**
-   - Use ngrok to expose your local Flask server to the internet. After starting ngrok, it will provide an HTTPS URL (e.g., `https://<your-subdomain>.ngrok.io`).
-
-2. **Update the Webhook URL:**
-   - Copy the ngrok HTTPS URL and update it in your `Bland_Ai_Integ.py` file. This URL will be used by the Bland API to send data to your Flask server.
-
-3. **Handle Webhook Requests:**
-   - Implement logic in your Flask server to process incoming webhook requests. This typically involves parsing the JSON payload sent by the Bland API and taking appropriate action.
-
-## API Documentation
-
-### POST /webhook
-
-- **Description**: Handles incoming webhook data.
-- **Method**: POST
-- **Request Body**: JSON object with the data sent by the Bland API.
-- **Response**: 
-    - Success: `{"status": "success"}`
-    - Failure: `{"status": "failure"}`
-
-### GET /conversations
-
-- **Description**: Retrieves stored conversations.
-- **Method**: GET
-- **Response**: 
-    - Success: JSON array of conversations
-    - Failure: `{"error": "No conversations found"}`
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
+env_variables:
+  API_KEY: "your_bland_ai_api_key"
