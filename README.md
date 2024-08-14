@@ -127,3 +127,7 @@ env_variables:
 - **Description**: Manually triggers a call using the Bland AI API.
 - **Method**: GET
 - **Response**: JSON object containing the API response
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
