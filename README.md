@@ -1,5 +1,5 @@
 # Bland_AI
-## GCP Deployment Project
+## Bland_AI Cloud Integration
 
 This project involves deploying a Flask application on Google Cloud Platform (GCP) that interacts with the Bland AI API. It includes a webhook endpoint for receiving data from Bland AI, a method to manually trigger calls, and instructions for deploying the application to GCP.
 
