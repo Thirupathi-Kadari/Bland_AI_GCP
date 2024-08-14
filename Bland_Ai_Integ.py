@@ -52,7 +52,7 @@ def trigger_call():
         },
         "max_duration": 30,
         "record": True,
-        "webhook": "https://bland-ai-431701.ts.r.appspot.com/webhook",
+        "webhook": "https://your_webhook_URL/webhook",
         "metadata": {},
         "summary_prompt": "Summarize the call with 'See you, have a good one'",
         "answered_by_enabled": True
