@@ -102,3 +102,28 @@ entrypoint: gunicorn -b :$PORT app:app
 
 env_variables:
   API_KEY: "your_bland_ai_api_key"
+
+## API Documentation
+
+### POST /webhook
+
+- **Description**: Handles incoming webhook data from the Bland AI API.
+- **Method**: POST
+- **Request Body**: JSON object with the data sent by the Bland AI API.
+- **Response**: 
+    - **Success**: `{"status": "success"}`
+    - **Failure**: `{"status": "failure"}`
+
+### GET /conversations
+
+- **Description**: Retrieves stored conversations.
+- **Method**: GET
+- **Response**: 
+    - **Success**: JSON array of conversations
+    - **Failure**: `{"error": "No conversations found"}`
+
+### GET /trigger_call
+
+- **Description**: Manually triggers a call using the Bland AI API.
+- **Method**: GET
+- **Response**: JSON object containing the API response
