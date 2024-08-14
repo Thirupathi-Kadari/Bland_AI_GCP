@@ -1,5 +1,14 @@
+# app.yaml
+
+# Specifies the runtime environment for the application
 runtime: python39
+
+# Command to start the application using gunicorn
+# The 'gunicorn -b :$PORT app:app' command binds gunicorn to the port provided by the environment variable $PORT
+# and specifies the WSGI application object to run (app:app)
 entrypoint: gunicorn -b :$PORT app:app
 
+# Environment variables for the application
+# API_KEY should be replaced with your actual API key for accessing the Bland AI API
 env_variables:
   API_KEY: "your_api_key"
